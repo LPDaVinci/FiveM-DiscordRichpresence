@@ -1,8 +1,8 @@
 Citizen.CreateThread(function()
     while true do
 		--Fahrzeugname
-		--local VehName = GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsUsing(PlayerPedId()))))
-		--if VehName == "NULL" then VehName = GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsUsing(PlayerPedId()))) end
+		local VehName = GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsUsing(PlayerPedId()))))
+		if VehName == "NULL" then VehName = GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsUsing(PlayerPedId()))) end
 		
 		--Straßenname anhand der Koordinaten
 		local x,y,z = table.unpack(GetEntityCoords(PlayerPedId(),true))
@@ -53,10 +53,12 @@ Citizen.CreateThread(function()
 				-- local MPH = math.ceil(GetEntitySpeed(GetVehiclePedIsUsing(PlayerPedId())) * 2.236936)
 				--KMH
 				local MPH = math.ceil(GetEntitySpeed(GetVehiclePedIsUsing(PlayerPedId())) * 3.6)
-				if MPH > 30 then
-					SetRichPresence("ID: "..id.." | "..PlayerName.." | ".."Fährt gerade: " ..MPH.." KM/h")				
+				if MPH > 80 then
+					SetRichPresence("ID: "..id.." | "..PlayerName.." | ".."Rast gerade: " ..MPH.." KM/h in einem "..VehName)				
+				elseif MPH <= 80 and MPH > 0 then
+					SetRichPresence("ID: "..id.." | "..PlayerName.." | ".."Fährt mit: " ..MPH.." KM/h in einem "..VehName)	
 				elseif MPH == 0 then
-					SetRichPresence("ID: "..id.." | "..PlayerName.." | ".."Parkt gerade")
+					SetRichPresence("ID: "..id.." | "..PlayerName.." | ".."Parkt in der "..StreetName.. " in einem "..VehName)
 				end
 			elseif IsPedInAnyHeli(PlayerPedId()) or IsPedInAnyPlane(PlayerPedId()) then
 				if IsEntityInAir(GetVehiclePedIsUsing(PlayerPedId())) or GetEntityHeightAboveGround(GetVehiclePedIsUsing(PlayerPedId())) > 5.0 then
